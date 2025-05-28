@@ -11,7 +11,7 @@ on:
 jobs:
   # Перше завдання: збірка і тестування
   build-and-test:
-    runs-on: ubuntu-latest # середовище виконання
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -27,13 +27,13 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run tests
-        run: pytest
+        run: PYTHONPATH=. pytest # <-- ОНОВЛЕНА КОМАНДА
 
   # Друге завдання: збірка Docker-образу та публікація в Docker Hub
   docker-build-and-push:
-    needs: build-and-test # виконується лише після успішного тестування
+    needs: build-and-test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' # тільки для головної гілки
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout repository
